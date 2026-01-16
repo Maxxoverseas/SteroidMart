@@ -113,7 +113,7 @@ const ProductsPage = () => {
                       <div className="text-white text-center space-y-2">
                         <p className="font-bold text-lg">{product.brand}</p>
                         <p className="text-yellow-300 font-bold text-xl">
-                          ${product.price}
+                          {product.price}
                         </p>
 
                         {/* Optional: Only show these if they exist in your product data */}

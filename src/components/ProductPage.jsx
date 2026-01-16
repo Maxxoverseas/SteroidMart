@@ -92,7 +92,7 @@ const ProductPage = () => {
       `Thank you!`;
 
     // WhatsApp number
-    const whatsappNumber = "9769397946";
+    const whatsappNumber = "+17342342932";
 
     // Encode the message for URL
     const encodedMessage = encodeURIComponent(whatsappMessage);

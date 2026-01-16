@@ -64,7 +64,7 @@ const Navbar = () => {
 
   // Marquee text
   const marqueeText =
-    "🚚 Shipping Notice: Extra $40 for 10 products, Extra $80 for 10+ products. Free shipping on orders above $5000! 🚚";
+    "🚚 Shipping Notice: Extra $40 for 10 products, Extra $80 for 10+ products.";
 
   return (
     <div className="sticky top-0 z-50">
@@ -296,11 +296,7 @@ const Navbar = () => {
                     <p className="text-xs text-blue-600">
                       • Extra $80 for 10+ products
                     </p>
-                    <p className="text-xs text-blue-600">
-                      • Free shipping on orders above $5000
-                    </p>
                   </div>
-
                   <Link
                     to="/"
                     className="flex items-center justify-between text-gray-700 hover:text-blue-600 py-3 border-b border-gray-100"
