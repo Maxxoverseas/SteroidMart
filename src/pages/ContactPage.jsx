@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FaWhatsapp,
   FaEnvelope,
@@ -11,6 +11,7 @@ import {
   FaTruck,
   FaCreditCard,
 } from "react-icons/fa";
+import emailjs from "@emailjs/browser";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -24,11 +25,24 @@ const ContactPage = () => {
   const [orderDetails, setOrderDetails] = useState(null);
   const [isOrderSubmitted, setIsOrderSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [emailStatus, setEmailStatus] = useState(null);
+  const formRef = useRef();
 
-  // WhatsApp number ko correct format mein rakhna - spaces remove karein
-  const whatsappNumber = "17342342932"; // US number with country code (1), space nahi
+  // EmailJS Configuration - Replace with your actual credentials
+  const EMAILJS_CONFIG = {
+    SERVICE_ID: "service_lpidc9v", // Replace with your EmailJS service ID
+    TEMPLATE_ID: "template_ypyvb2u", // Replace with your EmailJS template ID
+    PUBLIC_KEY: "avgDybE_LFCog3C4U", // Replace with your EmailJS public key
+    TO_EMAIL: "steroidmart5@gmail.com", // Your receiving email
+  };
+
+  // WhatsApp number
+  const whatsappNumber = "17342342932";
 
   useEffect(() => {
+    // Initialize EmailJS with your public key
+    emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+
     const storedOrder = localStorage.getItem("currentOrder");
     if (storedOrder) {
       const order = JSON.parse(storedOrder);
@@ -51,44 +65,98 @@ const ContactPage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      const completeOrderData = {
-        ...formData,
-        orderDetails,
-        timestamp: new Date().toISOString(),
-        orderId: "ORD-" + Date.now(),
+  const sendEmail = async (data) => {
+    try {
+      // Prepare template parameters for EmailJS
+      const templateParams = {
+        to_email: EMAILJS_CONFIG.TO_EMAIL,
+        from_name: data.name,
+        from_email: data.email,
+        phone: data.phone,
+        address: data.address,
+        message: data.message,
+        product_details: data.productDetails || "General Inquiry",
+        order_details: orderDetails
+          ? JSON.stringify(orderDetails, null, 2)
+          : "No order details",
+        order_id: "ORD-" + Date.now().toString().slice(-6),
+        submitted_at: new Date().toLocaleString(),
+        total_amount: orderDetails?.total || "N/A",
       };
 
-      console.log("Complete Order Submitted:", completeOrderData);
-      localStorage.removeItem("currentOrder");
-      setIsOrderSubmitted(true);
-      setIsSubmitting(false);
+      // Send email using EmailJS
+      const response = await emailjs.send(
+        EMAILJS_CONFIG.SERVICE_ID,
+        EMAILJS_CONFIG.TEMPLATE_ID,
+        templateParams
+      );
 
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        address: "",
-        message: "",
-        productDetails: "",
+      console.log("Email sent successfully:", response);
+      return { success: true, message: "Email sent successfully!" };
+    } catch (error) {
+      console.error("Email sending failed:", error);
+      return {
+        success: false,
+        message: "Failed to send email. Please try again.",
+      };
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setEmailStatus(null);
+
+    try {
+      // Send email first
+      const emailResult = await sendEmail(formData);
+
+      if (emailResult.success) {
+        const completeOrderData = {
+          ...formData,
+          orderDetails,
+          timestamp: new Date().toISOString(),
+          orderId: "ORD-" + Date.now(),
+        };
+
+        console.log("Complete Order Submitted:", completeOrderData);
+        localStorage.removeItem("currentOrder");
+        setIsOrderSubmitted(true);
+        setEmailStatus({
+          type: "success",
+          message: "Order submitted and email sent successfully!",
+        });
+
+        // Reset form
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          address: "",
+          message: "",
+          productDetails: "",
+        });
+        setOrderDetails(null);
+      } else {
+        setEmailStatus({ type: "error", message: emailResult.message });
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      setEmailStatus({
+        type: "error",
+        message: "An error occurred. Please try again.",
       });
-      setOrderDetails(null);
-    }, 1500);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleWhatsAppOrder = () => {
-    // WhatsApp link generator function
     const getWhatsAppLink = (message) => {
       const encodedMessage = encodeURIComponent(message);
       return `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
     };
 
-    // Agar order details available hai
     if (orderDetails) {
       const whatsappMessage =
         `*NEW ORDER REQUEST - Steroid Market*\n\n` +
@@ -111,7 +179,6 @@ const ContactPage = () => {
       const whatsappUrl = getWhatsAppLink(whatsappMessage);
       window.open(whatsappUrl, "_blank");
     } else {
-      // Agar koi order nahi hai, toh simple contact message
       const whatsappMessage =
         `*CONTACT REQUEST - Steroid Market*\n\n` +
         `👤 *Customer Details:*\n` +
@@ -128,7 +195,6 @@ const ContactPage = () => {
     }
   };
 
-  // General WhatsApp contact function (jo contact methods mein use hoga)
   const handleWhatsAppContact = (prefilledMessage = "") => {
     const getWhatsAppLink = (message) => {
       const encodedMessage = encodeURIComponent(message);
@@ -156,11 +222,11 @@ const ContactPage = () => {
     {
       icon: <FaEnvelope className="text-2xl text-blue-500" />,
       title: "Email",
-      details: "----------@gmail.com",
+      details: "steroidmart5@gmail.com",
       description: "24-hour response",
       color: "bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200",
       actionText: "Send Email",
-      onClick: () => (window.location.href = "mailto:----------@gmail.com"),
+      onClick: () => (window.location.href = "mailto:steroidmart5@gmail.com"),
     },
     {
       icon: <FaPhoneAlt className="text-2xl text-red-500" />,
@@ -247,7 +313,40 @@ const ContactPage = () => {
                 <p className="text-sm text-gray-500 mt-2">
                   Order ID: ORD-{Date.now().toString().slice(-6)}
                 </p>
+                <p className="text-sm text-green-600 font-medium mt-2">
+                  Confirmation email has been sent to steroidmart5@gmail.com
+                </p>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Email Status Message */}
+        {emailStatus && (
+          <div
+            className={`mb-8 rounded-2xl p-4 shadow-lg ${
+              emailStatus.type === "success"
+                ? "bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200"
+                : "bg-gradient-to-r from-red-50 to-orange-50 border border-red-200"
+            }`}
+          >
+            <div className="flex items-center space-x-3">
+              {emailStatus.type === "success" ? (
+                <FaCheckCircle className="text-green-500 text-xl" />
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center">
+                  <span className="text-white text-sm">!</span>
+                </div>
+              )}
+              <p
+                className={
+                  emailStatus.type === "success"
+                    ? "text-green-700"
+                    : "text-red-700"
+                }
+              >
+                {emailStatus.message}
+              </p>
             </div>
           </div>
         )}
@@ -426,7 +525,6 @@ const ContactPage = () => {
                     </div>
                   </div>
 
-                  {/* WhatsApp Button - Ab theek kaam karega */}
                   <button
                     onClick={handleWhatsAppOrder}
                     className="w-full mt-6 bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4 rounded-xl font-bold hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-3 group"
@@ -441,7 +539,7 @@ const ContactPage = () => {
               )}
 
               {/* Order Form */}
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -553,7 +651,7 @@ const ContactPage = () => {
                     ) : (
                       <div className="flex items-center justify-center space-x-2">
                         <FaPaperPlane />
-                        <span>Submit Order</span>
+                        <span>Submit Order & Send Email</span>
                       </div>
                     )}
                   </button>
@@ -572,7 +670,8 @@ const ContactPage = () => {
 
                 <p className="text-sm text-gray-500 text-center pt-4">
                   By submitting, you agree to our terms and confirm you are 18+
-                  years old. For research purposes only.
+                  years old. For research purposes only. All data will be sent
+                  to steroidmart5@gmail.com
                 </p>
               </form>
             </div>
