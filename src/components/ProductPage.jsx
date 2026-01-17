@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { products } from "../data/products";
 
 const ProductPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [imageError, setImageError] = useState(false);
-  const [activeTab, setActiveTab] = useState("composition"); // 'composition' or 'related'
+  const [activeTab, setActiveTab] = useState("composition");
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const relatedProductsContainerRef = useRef(null);
@@ -19,7 +21,6 @@ const ProductPage = () => {
     setProduct(foundProduct);
 
     if (foundProduct) {
-      // Get related products (same brand or category) - limited to 8 for sliding
       const related = products
         .filter(
           (p) =>
@@ -32,7 +33,6 @@ const ProductPage = () => {
     }
   }, [id]);
 
-  // Slide functions
   const slideLeft = () => {
     if (currentSlide > 0) {
       setCurrentSlide(currentSlide - 1);
@@ -46,6 +46,7 @@ const ProductPage = () => {
     }
   };
 
+  // ✅ FIXED: Buy Now button - direct contact page navigation
   const handleBuyNow = () => {
     if (!product) return;
 
@@ -65,7 +66,9 @@ const ProductPage = () => {
     };
 
     localStorage.setItem("currentOrder", JSON.stringify(orderData));
-    window.location.href = "/contact";
+
+    // ✅ GitHub Pages safe navigation using React Router
+    navigate("/contact");
   };
 
   const handleWhatsApp = () => {
@@ -75,7 +78,6 @@ const ProductPage = () => {
       parseFloat(product.price.replace("$", "")) * quantity
     ).toFixed(2);
 
-    // Create detailed WhatsApp message
     const whatsappMessage =
       `*🛒 NEW ORDER INQUIRY - PharmaStore*\n\n` +
       `*📦 Product Details:*\n` +
@@ -91,32 +93,23 @@ const ProductPage = () => {
       `I want to order this product. Please confirm availability and provide payment details.\n\n` +
       `Thank you!`;
 
-    // WhatsApp number
     const whatsappNumber = "+17342342932";
-
-    // Encode the message for URL
     const encodedMessage = encodeURIComponent(whatsappMessage);
-
-    // Create WhatsApp URL with pre-filled message
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-    // Open WhatsApp in new tab
     window.open(whatsappUrl, "_blank");
   };
 
-  // Format composition text with proper styling
   const formatComposition = (text) => {
     const sections = text.split("**").filter((section) => section.trim());
     return sections.map((section, index) => {
       if (index % 2 === 0) {
-        // Regular text
         return (
           <p key={index} className="mb-3 text-gray-700">
             {section.trim()}
           </p>
         );
       } else {
-        // Bold section title
         return (
           <h4 key={index} className="font-bold text-blue-700 mt-4 mb-2">
             {section.trim()}
@@ -146,14 +139,13 @@ const ProductPage = () => {
     parseFloat(product.price.replace("$", "")) * quantity
   ).toFixed(2);
 
-  // Fallback image if product image doesn't exist
   const imageSrc = imageError
     ? "https://via.placeholder.com/600x600/3B82F6/FFFFFF?text=Pharma+Product"
     : product.image;
 
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
-      {/* Breadcrumb - Mobile Responsive */}
+      {/* Breadcrumb */}
       <div className="mb-4 sm:mb-6 text-xs sm:text-sm text-gray-600 flex flex-wrap items-center">
         <Link to="/" className="hover:text-blue-600 whitespace-nowrap">
           Home
@@ -185,7 +177,7 @@ const ProductPage = () => {
             </div>
           </div>
 
-          {/* Quick Info Cards - Responsive */}
+          {/* Quick Info Cards */}
           <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:gap-4">
             <div className="bg-blue-50 rounded-lg p-2 sm:p-3 lg:p-4">
               <p className="text-xs sm:text-sm text-blue-600 mb-1">Brand</p>
@@ -220,7 +212,7 @@ const ProductPage = () => {
               </div>
             </div>
 
-            {/* Specifications Grid - Responsive */}
+            {/* Specifications Grid */}
             <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
               <div className="border border-gray-200 rounded-lg p-3 sm:p-4">
                 <p className="text-xs sm:text-sm text-gray-500 mb-1">Potency</p>
@@ -238,7 +230,7 @@ const ProductPage = () => {
               </div>
             </div>
 
-            {/* Quantity Selector - Responsive */}
+            {/* Quantity Selector */}
             <div className="mb-6 sm:mb-8">
               <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-gray-800">
                 Select Quantity
@@ -277,7 +269,7 @@ const ProductPage = () => {
               </div>
             </div>
 
-            {/* Action Buttons - Responsive */}
+            {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <button
                 onClick={handleBuyNow}
@@ -326,9 +318,8 @@ const ProductPage = () => {
         </div>
       </div>
 
-      {/* Tabs Section - Product Composition & Related Products */}
+      {/* Tabs Section */}
       <div className="mt-8 sm:mt-12">
-        {/* Tabs Navigation */}
         <div className="flex border-b border-gray-200">
           <button
             className={`flex-1 py-3 sm:py-4 px-4 text-center font-medium text-sm sm:text-base ${
@@ -352,9 +343,7 @@ const ProductPage = () => {
           </button>
         </div>
 
-        {/* Tab Content */}
         <div className="bg-white rounded-b-lg sm:rounded-b-xl shadow-lg p-4 sm:p-6 lg:p-8">
-          {/* Composition Tab Content */}
           {activeTab === "composition" && product.composition && (
             <div className="prose max-w-none">
               <div className="bg-gray-50 rounded-lg p-3 sm:p-4 lg:p-6 overflow-x-auto">
@@ -365,12 +354,10 @@ const ProductPage = () => {
             </div>
           )}
 
-          {/* Related Products Tab Content */}
           {activeTab === "related" && (
             <div className="relative">
               {relatedProducts.length > 0 ? (
                 <>
-                  {/* Slider Controls */}
                   <div className="flex justify-between items-center mb-4 sm:mb-6">
                     <button
                       onClick={slideLeft}
@@ -430,7 +417,6 @@ const ProductPage = () => {
                     </button>
                   </div>
 
-                  {/* Products Slider */}
                   <div
                     ref={relatedProductsContainerRef}
                     className="overflow-hidden"
@@ -506,7 +492,6 @@ const ProductPage = () => {
                     </div>
                   </div>
 
-                  {/* Slide Indicators */}
                   <div className="flex justify-center mt-4 sm:mt-6 space-x-2">
                     {Array.from({
                       length: Math.max(1, relatedProducts.length - 4),
