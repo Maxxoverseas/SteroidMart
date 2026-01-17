@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -16,7 +16,7 @@ import ReviewsPage from "./components/ReviewsPage";
 
 function App() {
   return (
-    <Router>
+    <HashRouter>
       <ScrollToTop />
 
       <div className="min-h-screen flex flex-col bg-gray-100">
@@ -32,13 +32,13 @@ function App() {
             <Route path="/brand/:brandName" element={<BrandProductsPage />} />
             <Route path="/search/:query" element={<SearchResults />} />
             <Route path="/all-brands" element={<ProductsPage />} />
-            <Route path="/reviewspage" element={<ReviewsPage />} />
+            <Route path="/reviews" element={<ReviewsPage />} />
           </Routes>
         </main>
 
         <Footer />
       </div>
-    </Router>
+    </HashRouter>
   );
 }
 
