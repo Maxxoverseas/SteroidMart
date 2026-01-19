@@ -7,6 +7,7 @@ import {
   FiStar,
   FiChevronDown,
   FiChevronUp,
+  FiEdit,
 } from "react-icons/fi";
 import { products } from "../data/products";
 
@@ -58,6 +59,12 @@ const Navbar = () => {
 
   const handleReviewsClick = () => {
     navigate("/reviewspage");
+    setIsMenuOpen(false);
+    setHoveredItem(null);
+  };
+
+  const handleBlogClick = () => {
+    navigate("/blog");
     setIsMenuOpen(false);
     setHoveredItem(null);
   };
@@ -118,6 +125,25 @@ const Navbar = () => {
               >
                 All Products
                 {activeNav === "products" && (
+                  <div
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"
+                    style={{
+                      animation: "slideIn 0.3s ease-out forwards",
+                    }}
+                  ></div>
+                )}
+              </button>
+
+              {/* Blog Link */}
+              <button
+                onClick={handleBlogClick}
+                className="relative text-gray-700 hover:text-blue-600 transition py-2 flex items-center"
+                onMouseEnter={() => setActiveNav("blog")}
+                onMouseLeave={() => setActiveNav(null)}
+              >
+                <FiEdit className="mr-1" />
+                Blog
+                {activeNav === "blog" && (
                   <div
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600"
                     style={{
@@ -314,6 +340,21 @@ const Navbar = () => {
                     className="flex items-center justify-between w-full text-gray-700 hover:text-blue-600 text-left py-3 border-b border-gray-100"
                   >
                     <span>All Products</span>
+                    <span className="text-blue-600">→</span>
+                  </button>
+
+                  {/* Blog Link - Mobile */}
+                  <button
+                    onClick={() => {
+                      handleBlogClick();
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center justify-between w-full text-gray-700 hover:text-blue-600 text-left py-3 border-b border-gray-100"
+                  >
+                    <div className="flex items-center">
+                      <FiEdit className="mr-2" />
+                      Blog
+                    </div>
                     <span className="text-blue-600">→</span>
                   </button>
 

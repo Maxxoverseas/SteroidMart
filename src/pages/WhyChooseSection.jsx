@@ -238,31 +238,6 @@ function WhyChooseSection() {
             </div>
           </div>
         </div>
-
-        {/* CTA */}
-        <div className="mt-20 text-center">
-          <h3 className="text-3xl font-bold text-gray-900 mb-6">
-            Ready to Experience the Difference?
-          </h3>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Join thousands of satisfied customers who trust Steroid Mart for
-            their performance enhancement needs.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="/products"
-              className="inline-flex items-center justify-center bg-gradient-to-r from-red-600 to-orange-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
-            >
-              Browse Products
-            </a>
-            <a
-              href="/contact"
-              className="inline-flex items-center justify-center bg-white text-gray-900 border-2 border-gray-300 px-8 py-4 rounded-xl font-bold text-lg hover:border-gray-400 hover:shadow-lg transition-all duration-300"
-            >
-              Get Expert Advice
-            </a>
-          </div>
-        </div>
       </div>
     </section>
   );

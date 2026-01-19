@@ -27,21 +27,9 @@ const Footer = () => {
 
   const paymentMethods = [
     {
-      name: "PayPal",
+      name: "Remitly",
       image:
-        "https://i.pcmag.com/imagery/reviews/068BjcjwBw0snwHIq0KNo5m-15..v1602794215.png",
-      bgColor: "bg-blue-50",
-    },
-    {
-      name: "Crypto",
-      image:
-        "https://img.freepik.com/free-vector/cryptocurrency-bitcoin-golden-coin-background_1017-31505.jpg?semt=ais_hybrid&w=740&q=80",
-      bgColor: "bg-orange-50",
-    },
-    {
-      name: "Venmo",
-      image:
-        "https://images.prismic.io/bigcartel-staging/Z-IxSndAxsiBv2YN_venmo.png?auto=format,compress&rect=320,0,800,600&w=1800&h=1350",
+        "https://financialit.net/sites/default/files/remitly-new-logo-april-2016.png",
       bgColor: "bg-blue-50",
     },
     {
@@ -50,14 +38,27 @@ const Footer = () => {
       bgColor: "bg-purple-50",
     },
     {
-      name: "Credit Cards",
-      image: "https://cdn-icons-png.flaticon.com/512/179/179457.png",
-      bgColor: "bg-gray-50",
+      name: "Western Union",
+      image:
+        "https://financialit.net/sites/default/files/western-union-logo-old.png",
+      bgColor: "bg-green-50",
     },
     {
-      name: "Apple Pay",
-      image: "https://cdn-icons-png.flaticon.com/512/179/179457.png",
-      bgColor: "bg-black",
+      name: "Visa",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png",
+      bgColor: "bg-blue-50",
+    },
+    {
+      name: "Bitcoin",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bitcoin.svg/1200px-Bitcoin.svg.png",
+      bgColor: "bg-orange-50",
+    },
+    {
+      name: "USDT",
+      image: "https://cryptologos.cc/logos/tether-usdt-logo.png",
+      bgColor: "bg-green-50",
     },
   ];
 
@@ -308,10 +309,10 @@ const Footer = () => {
                 <div>
                   <p className="font-semibold text-sm">Email</p>
                   <a
-                    href="mailto:support@pharmastore.com"
+                    href="mailto:steroidmart5@gmail.com"
                     className="text-gray-300 hover:text-white transition text-sm"
                   >
-                    -----------@.com
+                    steroidmart5@gmail.com
                   </a>
                 </div>
               </div>
@@ -361,15 +362,25 @@ const Footer = () => {
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
             {paymentMethods.map((method, index) => (
-              <div
-                key={index}
-                className={`${method.bgColor} rounded-lg p-3 flex items-center justify-center h-16`}
-              >
-                <img
-                  src={method.image}
-                  alt={method.name}
-                  className="max-h-10 max-w-full object-contain"
-                />
+              <div key={index} className="relative group">
+                <div
+                  className={`${method.bgColor} rounded-lg p-3 flex items-center justify-center h-16 transition-all duration-300 group-hover:shadow-lg group-hover:scale-105`}
+                >
+                  <img
+                    src={method.image}
+                    alt={method.name}
+                    className="max-h-10 max-w-full object-contain"
+                  />
+                </div>
+                {/* Hover Tooltip */}
+                <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                  <div className="bg-gray-800 text-white text-xs font-medium py-1 px-3 rounded-md whitespace-nowrap">
+                    {method.name}
+                    <div className="absolute left-1/2 transform -translate-x-1/2 bottom-[-4px]">
+                      <div className="w-2 h-2 bg-gray-800 rotate-45"></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

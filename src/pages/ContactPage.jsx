@@ -28,12 +28,11 @@ const ContactPage = () => {
   const [emailStatus, setEmailStatus] = useState(null);
   const formRef = useRef();
 
-  // EmailJS Configuration - Replace with your actual credentials
   const EMAILJS_CONFIG = {
-    SERVICE_ID: "service_lpidc9v", // Replace with your EmailJS service ID
-    TEMPLATE_ID: "template_ypyvb2u", // Replace with your EmailJS template ID
-    PUBLIC_KEY: "avgDybE_LFCog3C4U", // Replace with your EmailJS public key
-    TO_EMAIL: "steroidmart5@gmail.com", // Your receiving email
+    SERVICE_ID: "service_lpidc9v",
+    TEMPLATE_ID: "template_ypyvb2u",
+    PUBLIC_KEY: "avgDybE_LFCog3C4U",
+    TO_EMAIL: "steroidmart5@gmail.com",
   };
 
   // WhatsApp number
