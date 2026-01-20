@@ -24,21 +24,19 @@ function App() {
       <div className="min-h-screen flex flex-col bg-gray-100">
         <Navbar />
 
-        <main className="flex-grow container mx-auto px-4 py-8">
-          <Routes>
-            <Route path="/" element={<Hero />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/product/:id" element={<ProductPage />} />
-            <Route path="/brand/:brandName" element={<BrandProductsPage />} />
-            <Route path="/search/:query" element={<SearchResults />} />
-            <Route path="/all-brands" element={<ProductsPage />} />
-            <Route path="/reviewspage" element={<ReviewsPage />} />
-            <Route path="/blog" element={<SteroidsBlogPage />} />
-            <Route path="/category/:categoryName" element={<CategoryPage />} />
-          </Routes>
-        </main>
+        <Routes>
+          <Route path="/" element={<Hero />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/product/:id" element={<ProductPage />} />
+          <Route path="/brand/:brandName" element={<BrandProductsPage />} />
+          <Route path="/search/:query" element={<SearchResults />} />
+          <Route path="/all-brands" element={<ProductsPage />} />
+          <Route path="/reviewspage" element={<ReviewsPage />} />
+          <Route path="/blog" element={<SteroidsBlogPage />} />
+          <Route path="/category/:categoryName" element={<CategoryPage />} />
+        </Routes>
 
         <Footer />
       </div>

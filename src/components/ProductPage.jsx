@@ -144,7 +144,7 @@ const ProductPage = () => {
     : product.image;
 
   return (
-    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+    <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 mt-7">
       {/* Breadcrumb */}
       <div className="mb-4 sm:mb-6 text-xs sm:text-sm text-gray-600 flex flex-wrap items-center">
         <Link to="/" className="hover:text-blue-600 whitespace-nowrap">
