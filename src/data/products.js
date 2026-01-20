@@ -592,8 +592,7 @@ export const products = [
     potency: "50MG",
     price: "$27.00",
     category: "ORALS",
-    image:
-      "https://5.imimg.com/data5/SELLER/Default/2025/5/513439629/RL/YF/NT/154726424/oxydrolone-big-500x500.jpg",
+    image: "https://cpimg.tistatic.com/5988704/b/4/anadrol-50-tablet.jpg",
   },
   {
     id: 72,
@@ -606,7 +605,7 @@ export const products = [
     price: "$39.60",
     category: "ORALS",
     image:
-      "https://img500.exportersindia.com/product_images/bc-500/2023/9/11731200/turinabol-10mg-tablet-1686888888-6938602.jpeg",
+      "https://infinity-pharmaceuticals.com/wp-content/uploads/2024/05/28.1.webp",
   },
   {
     id: 73,
