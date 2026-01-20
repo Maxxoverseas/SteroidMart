@@ -26,7 +26,7 @@ function HeroSection() {
   const product = featured[index];
 
   return (
-    <section className="bg-gray-50 min-h-[80vh] flex items-center">
+    <section className="bg-gray-50 min-h-[80vh] flex items-center mb-3">
       <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
         {/* LEFT CONTENT */}
         <div>
@@ -79,7 +79,7 @@ function HeroSection() {
             <img
               src={product?.image}
               alt={product?.name}
-              className="h-48 mx-auto object-contain mb-4"
+              className="h-60 mx-auto object-contain mb-4"
               onError={(e) => {
                 e.target.src =
                   "https://via.placeholder.com/300x300?text=Product";
