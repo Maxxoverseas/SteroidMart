@@ -14,6 +14,7 @@ import BrandProductsPage from "./components/BrandProductsPage";
 import ProductsPage from "./components/ProductsPage";
 import ReviewsPage from "./components/ReviewsPage";
 import SteroidsBlogPage from "./components/SteroidsBlogPage";
+import CategoryPage from "./components/CategoryPage";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="/all-brands" element={<ProductsPage />} />
             <Route path="/reviewspage" element={<ReviewsPage />} />
             <Route path="/blog" element={<SteroidsBlogPage />} />
+            <Route path="/category/:categoryName" element={<CategoryPage />} />
           </Routes>
         </main>
 

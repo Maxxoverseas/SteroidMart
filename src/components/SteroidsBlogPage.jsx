@@ -527,9 +527,7 @@ const SteroidsBlogPage = () => {
                     <p className="text-gray-700">
                       This information is for educational purposes only. Steroid
                       use without medical supervision can be dangerous. Always
-                      consult with healthcare professionals. The brands
-                      mentioned may require prescriptions and have legal
-                      restrictions in many regions.
+                      consult with healthcare professionals.
                     </p>
                   </div>
                 </div>

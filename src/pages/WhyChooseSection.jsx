@@ -100,7 +100,7 @@ function WhyChooseSection() {
     { value: "100+", label: "Countries Served", icon: "🌍" },
     { value: "50K+", label: "Customers", icon: "👥" },
     { value: "99.3%", label: "Success Rate", icon: "✅" },
-    { value: "10+", label: "Years", icon: "📅" },
+    { value: "12+", label: "Years", icon: "📅" },
   ];
 
   return (
