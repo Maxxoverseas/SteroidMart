@@ -124,10 +124,6 @@ const BrandProductsPage = () => {
                           {product.price}
                         </p>
                       </div>
-
-                      <div className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-full text-sm sm:text-base font-medium">
-                        Click to View Full Details
-                      </div>
                     </div>
                   </div>
                 </div>
