@@ -13,115 +13,42 @@ import {
   FaFlask,
   FaPills,
 } from "react-icons/fa";
+import { products } from "../../data/products";
 
 function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Top 10 Steroids Products with Images
-  const steroidProducts = [
-    {
-      id: 1,
-      name: "Testosterone Enanthate",
-      category: "Bulking",
-      rating: 4.9,
-      image:
-        "https://www.empowerpharmacy.com/wp-content/uploads/2025/07/2025-empower-pharmacy-testosterone-enanthate-injection-200mgml-5ml-294x490-1.jpg",
-    },
-    {
-      id: 2,
-      name: "Trenbolone Acetate",
-      category: "Cutting",
-      rating: 4.8,
-      image:
-        "https://5.imimg.com/data5/SELLER/Default/2024/8/446708778/UZ/ZA/OY/225643197/trenbolone-acetate-injection-500x500.jpg",
-    },
-    {
-      id: 3,
-      name: "Deca Durabolin",
-      category: "Bulking",
-      rating: 4.7,
-      image:
-        "https://cdn.shopify.com/s/files/1/0651/0788/6326/products/Deca-DuraBolin_by_Hi-Tech.jpg?v=1736135497",
-    },
-    {
-      id: 4,
-      name: "Winstrol",
-      category: "Cutting",
-      rating: 4.6,
-      image:
-        "https://img500.exportersindia.com/product_images/bc-500/2024/1/12922490/winstrol-injection-1704617722-7239173.jpg",
-    },
-    {
-      id: 5,
-      name: "Anavar",
-      category: "Cutting",
-      rating: 4.9,
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYlX3AYnHqN2bPwBdOTePD-ZFzmaNHKzDYcA&s",
-    },
-    {
-      id: 6,
-      name: "Dianabol",
-      category: "Bulking",
-      rating: 4.7,
-      image: "https://gdimg.gmarket.co.kr/2913591641/still/400?ver=1741888030",
-    },
-    {
-      id: 7,
-      name: "Clenbuterol",
-      category: "Fat Loss",
-      rating: 4.5,
-      image:
-        "https://www.vinmec.com/static/uploads/small_20220220_225115_400180_clenbuterol_6_145_max_1800x1800_jpg_99c974e25a.jpg",
-    },
-    {
-      id: 8,
-      name: "HGH",
-      category: "Anti-Aging",
-      rating: 4.9,
-      image: "https://www.usada.org/wp-content/uploads/hgh-post.jpg",
-    },
-    {
-      id: 9,
-      name: "Sustanon 250",
-      category: "Bulking",
-      rating: 4.8,
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT61vtlH7q3Lk98ghCRW794U2Wr_hivVE26oQ&s",
-    },
-    {
-      id: 10,
-      name: "Primobolan",
-      category: "Cutting",
-      rating: 4.7,
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-ZM3Sa0A01zdkyh-RQGxTMp1lKpi8vp7owg&s",
-    },
-  ];
+  // Top products select karo (first 10 ya specific sort criteria)
+  const topProducts = products.slice(0, 200);
 
-  // Icons for categories
+  // Category ke liye icons
   const categoryIcons = {
     Bulking: <FaCapsules className="text-lg" />,
     Cutting: <FaSyringe className="text-lg" />,
     "Fat Loss": <FaFlask className="text-lg" />,
     "Anti-Aging": <FaPills className="text-lg" />,
+    // Aur categories add karo agar data.js me hai
+    Steroids: <FaCapsules className="text-lg" />,
+    "Pain Relief": <FaFlask className="text-lg" />,
+    Antibiotics: <FaSyringe className="text-lg" />,
+    Vitamins: <FaPills className="text-lg" />,
   };
 
   // Auto slide every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % steroidProducts.length);
+      setCurrentSlide((prev) => (prev + 1) % topProducts.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [topProducts.length]);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % steroidProducts.length);
+    setCurrentSlide((prev) => (prev + 1) % topProducts.length);
   };
 
   const prevSlide = () => {
     setCurrentSlide(
-      (prev) => (prev - 1 + steroidProducts.length) % steroidProducts.length
+      (prev) => (prev - 1 + topProducts.length) % topProducts.length
     );
   };
 
@@ -161,15 +88,14 @@ function HeroSection() {
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
               Premium
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-500">
-                Steroid Mart
+                Pharma Mart
               </span>
             </h1>
 
             {/* Subtitle */}
             <p className="text-lg text-gray-600 mb-8 max-w-xl leading-relaxed">
-              Your trusted source for pharmaceutical-grade performance
-              enhancement products. Laboratory tested, discreetly shipped
-              worldwide since 2016.
+              Your trusted source for pharmaceutical-grade products. Laboratory
+              tested, discreetly shipped worldwide since 2016.
             </p>
 
             {/* Features */}
@@ -224,81 +150,96 @@ function HeroSection() {
             </div>
           </div>
 
-          {/* Right Visual - Updated with Product Slider */}
+          {/* Right Visual - Updated with Dynamic Product Slider */}
           <div className="relative">
             <div className="bg-gradient-to-br from-gray-50 to-white rounded-2xl p-6 sm:p-8 border border-gray-200 shadow-xl">
               {/* Product Slider */}
               <div className="mb-8">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-bold text-gray-900">
-                    Top 10 Steroids
+                    Featured Products
                   </h3>
                   <div className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                    {currentSlide + 1}/{steroidProducts.length}
+                    {currentSlide + 1}/{topProducts.length}
                   </div>
                 </div>
 
                 <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-900 to-black p-6">
-                  {/* Product Image and Details */}
-                  <div className="flex flex-col md:flex-row items-center gap-6 mb-6">
-                    {/* Product Image */}
-                    <div className="w-full md:w-2/5">
-                      <div className="relative h-48 md:h-40 rounded-lg overflow-hidden border-2 border-red-500/30">
-                        <img
-                          src={steroidProducts[currentSlide].image}
-                          alt={steroidProducts[currentSlide].name}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                          TOP {currentSlide + 1}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Product Info */}
-                    <div className="w-full md:w-3/5 text-center md:text-left">
-                      <div className="text-2xl font-bold text-white mb-3">
-                        {steroidProducts[currentSlide].name}
-                      </div>
-
-                      <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-4">
-                        <div className="flex items-center space-x-2 px-3 py-1 bg-red-500/20 rounded-full">
-                          <span className="text-red-300">
-                            {
-                              categoryIcons[
-                                steroidProducts[currentSlide].category
-                              ]
+                  {/* Product Image and Details - Clickable Link */}
+                  <Link to={`/product/${topProducts[currentSlide]?.id}`}>
+                    <div className="flex flex-col md:flex-row items-center gap-6 mb-6 cursor-pointer hover:opacity-90 transition-opacity">
+                      {/* Product Image */}
+                      <div className="w-full md:w-2/5">
+                        <div className="relative h-48 md:h-40 rounded-lg overflow-hidden border-2 border-red-500/30">
+                          <img
+                            src={
+                              topProducts[currentSlide]?.image ||
+                              "https://via.placeholder.com/300x400/3B82F6/FFFFFF?text=Product"
                             }
-                          </span>
-                          <span className="text-red-300 text-sm">
-                            {steroidProducts[currentSlide].category}
-                          </span>
-                        </div>
-
-                        <div className="flex items-center space-x-1">
-                          {[...Array(5)].map((_, i) => (
-                            <FaStar
-                              key={i}
-                              className={`text-sm ${
-                                i <
-                                Math.floor(steroidProducts[currentSlide].rating)
-                                  ? "text-yellow-400"
-                                  : "text-gray-600"
-                              }`}
-                            />
-                          ))}
-                          <span className="text-white font-semibold ml-1">
-                            {steroidProducts[currentSlide].rating}
-                          </span>
+                            alt={topProducts[currentSlide]?.name || "Product"}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.src =
+                                "https://via.placeholder.com/300x400/3B82F6/FFFFFF?text=Product";
+                            }}
+                          />
+                          <div className="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
+                            TOP {currentSlide + 1}
+                          </div>
                         </div>
                       </div>
 
-                      <div className="text-gray-400 text-sm">
-                        Premium pharmaceutical grade. Laboratory tested and
-                        certified.
+                      {/* Product Info */}
+                      <div className="w-full md:w-3/5 text-center md:text-left">
+                        <div className="text-2xl font-bold text-white mb-3">
+                          {topProducts[currentSlide]?.product ||
+                            topProducts[currentSlide]?.name ||
+                            "Product Name"}
+                        </div>
+
+                        <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mb-4">
+                          <div className="flex items-center space-x-2 px-3 py-1 bg-red-500/20 rounded-full">
+                            <span className="text-red-300">
+                              {categoryIcons[
+                                topProducts[currentSlide]?.category || "Other"
+                              ] || <FaCapsules className="text-lg" />}
+                            </span>
+                            <span className="text-red-300 text-sm">
+                              {topProducts[currentSlide]?.category ||
+                                "Category"}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center space-x-1">
+                            {[...Array(5)].map((_, i) => (
+                              <FaStar
+                                key={i}
+                                className={`text-sm ${
+                                  i < 4 ? "text-yellow-400" : "text-gray-600"
+                                }`}
+                              />
+                            ))}
+                            <span className="text-white font-semibold ml-1">
+                              4.5
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="text-gray-400 text-sm mb-2">
+                          {topProducts[currentSlide]?.brand || "Premium Brand"}
+                        </div>
+
+                        <div className="text-gray-400 text-sm">
+                          {topProducts[currentSlide]?.description ||
+                            "Premium pharmaceutical grade. Laboratory tested and certified."}
+                        </div>
+
+                        <div className="mt-4 text-xl font-bold text-yellow-400">
+                          {topProducts[currentSlide]?.price || "$99.99"}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
 
                   {/* Navigation Buttons */}
                   <div className="flex justify-between items-center">
@@ -312,7 +253,7 @@ function HeroSection() {
 
                     {/* Dots Indicator */}
                     <div className="flex space-x-2">
-                      {steroidProducts.slice(0, 5).map((_, index) => (
+                      {topProducts.slice(0, 5).map((_, index) => (
                         <button
                           key={index}
                           onClick={() => setCurrentSlide(index)}
@@ -350,10 +291,10 @@ function HeroSection() {
 
                 <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-xl p-4 text-center group hover:shadow-lg transition-all duration-300">
                   <div className="text-2xl font-bold text-blue-600 mb-1 group-hover:scale-110 transition-transform">
-                    50K+
+                    {products.length}+
                   </div>
                   <div className="text-xs font-medium text-blue-800">
-                    Happy Customers
+                    Products
                   </div>
                 </div>
 
@@ -370,9 +311,11 @@ function HeroSection() {
                 <div className="flex flex-col sm:flex-row items-center justify-between">
                   <div className="text-center sm:text-left mb-3 sm:mb-0">
                     <div className="text-white font-bold text-lg">
-                      12 Years of Excellence
+                      {products.length} Premium Products
                     </div>
-                    <div className="text-gray-400 text-sm">Since 2014</div>
+                    <div className="text-gray-400 text-sm">
+                      Across multiple categories
+                    </div>
                   </div>
 
                   <div className="flex space-x-4">

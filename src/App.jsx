@@ -13,6 +13,7 @@ import SearchResults from "./components/SearchResults";
 import BrandProductsPage from "./components/BrandProductsPage";
 import ProductsPage from "./components/ProductsPage";
 import ReviewsPage from "./components/ReviewsPage";
+import SteroidsBlogPage from "./components/SteroidsBlogPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="/search/:query" element={<SearchResults />} />
             <Route path="/all-brands" element={<ProductsPage />} />
             <Route path="/reviewspage" element={<ReviewsPage />} />
+            <Route path="/blog" element={<SteroidsBlogPage />} />
           </Routes>
         </main>
 
