@@ -1,1030 +1,384 @@
-import React, { useState, useEffect, useMemo } from "react";
-import {
-  FaCapsules,
-  FaFlask,
-  FaShieldAlt,
-  FaChartLine,
-  FaBuilding,
-  FaSearch,
-  FaStar,
-  FaCheckCircle,
-  FaRegHeart,
-  FaHeart,
-  FaFilter,
-  FaSortAmountDown,
-  FaSortAmountUp,
-  FaInfoCircle,
-  FaDownload,
-  FaShareAlt,
-  FaCalendarAlt,
-  FaUserMd,
-  FaExclamationTriangle,
-  FaRegCopy,
-  FaClipboardCheck,
-} from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
 
 const SteroidsBlogPage = () => {
-  const [favorites, setFavorites] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [sortBy, setSortBy] = useState("rating");
-  const [sortOrder, setSortOrder] = useState("desc");
-  const [selectedBrand, setSelectedBrand] = useState(null);
-  const [copiedId, setCopiedId] = useState(null);
-  const [viewMode, setViewMode] = useState("grid");
-  const [showDisclaimer, setShowDisclaimer] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const steroidData = [
+  // Pharmaceutical manufacturers data
+  const manufacturers = [
     {
       id: 1,
       name: "Alpha Pharma",
-      category: "Pharmaceutical",
-      benefits: [
-        "High-quality clinical-grade steroids",
-        "Precise dosage and purity",
-        "Medical supervision recommended",
-        "FDA-approved manufacturing",
-      ],
-      usage: "Clinical and therapeutic applications",
+      category: "Alpha Pharma",
+      description:
+        "Alpha Pharma is renowned for producing high-quality pharmaceutical products with strict quality control measures.",
+      products: ["Testosterones", "Oral Steroids", "Peptides"],
+      established: "2004",
+      country: "India",
       rating: 4.8,
-      reviews: 124,
-      color: "bg-gradient-to-br from-blue-50 to-blue-100",
-      borderColor: "border-blue-200",
-      textColor: "text-blue-800",
-      icon: <FaBuilding className="text-blue-600" />,
-      established: "1998",
-      popularity: 95,
-      sideEffects: "Low to moderate",
-      priceRange: "$$$",
-      legality: "Prescription required",
     },
     {
       id: 2,
       name: "Infinity Pharma",
-      category: "Research",
-      benefits: [
-        "Advanced research formulations",
-        "Cutting-edge delivery systems",
-        "Laboratory tested",
-        "Innovative compounds",
-      ],
-      usage: "Research and development",
-      rating: 4.5,
-      reviews: 89,
-      color: "bg-gradient-to-br from-purple-50 to-purple-100",
-      borderColor: "border-purple-200",
-      textColor: "text-purple-800",
-      icon: <FaFlask className="text-purple-600" />,
-      established: "2005",
-      popularity: 85,
-      sideEffects: "Varies by compound",
-      priceRange: "$$$$",
-      legality: "Research use only",
+      category: "Infinity Pharma",
+      description:
+        "Specializing in advanced research and development of performance-enhancing pharmaceuticals.",
+      products: ["Anabolic Steroids", "Fat Burners", "Hormones"],
+      established: "2010",
+      country: "International",
+      rating: 4.6,
     },
     {
       id: 3,
       name: "German Remedies",
-      category: "Therapeutic",
-      benefits: [
-        "Traditional European formulations",
-        "Focus on therapeutic benefits",
-        "Minimal side-effect profile",
-        "Long-standing reputation",
+      category: "German Remedies",
+      description:
+        "A trusted name in pharmaceutical manufacturing with a focus on purity and efficacy.",
+      products: [
+        "Injectable Steroids",
+        "Therapeutic Compounds",
+        "Post-Cycle Therapy",
       ],
-      usage: "Medical therapeutic treatments",
-      rating: 4.7,
-      reviews: 156,
-      color: "bg-gradient-to-br from-green-50 to-green-100",
-      borderColor: "border-green-200",
-      textColor: "text-green-800",
-      icon: <FaShieldAlt className="text-green-600" />,
-      established: "1972",
-      popularity: 90,
-      sideEffects: "Minimal",
-      priceRange: "$$$",
-      legality: "Prescription required",
+      established: "1998",
+      country: "Germany",
+      rating: 4.9,
     },
     {
       id: 4,
       name: "3rd Degree",
-      category: "Performance",
-      benefits: [
-        "High-performance formulations",
-        "Advanced results-oriented compounds",
-        "Enhanced bioavailability",
-        "Rapid absorption",
-      ],
-      usage: "Athletic performance enhancement",
-      rating: 4.3,
-      reviews: 67,
-      color: "bg-gradient-to-br from-red-50 to-red-100",
-      borderColor: "border-red-200",
-      textColor: "text-red-800",
-      icon: <FaChartLine className="text-red-600" />,
-      established: "2010",
-      popularity: 75,
-      sideEffects: "Moderate to high",
-      priceRange: "$$",
-      legality: "Controlled substance",
+      category: "3rd Degree",
+      description:
+        "Known for innovative formulations and cutting-edge delivery systems.",
+      products: ["SARM Compounds", "Research Chemicals", "Specialized Blends"],
+      established: "2012",
+      country: "USA",
+      rating: 4.5,
     },
     {
       id: 5,
       name: "G Med",
-      category: "Medical",
-      benefits: [
-        "Medical-grade quality",
-        "Hospital use approved",
-        "Sterile manufacturing",
-        "Clinical trial backed",
-      ],
-      usage: "Hospital and clinical settings",
-      rating: 4.6,
-      reviews: 112,
-      color: "bg-gradient-to-br from-teal-50 to-teal-100",
-      borderColor: "border-teal-200",
-      textColor: "text-teal-800",
-      icon: <FaCapsules className="text-teal-600" />,
-      established: "2001",
-      popularity: 88,
-      sideEffects: "Low",
-      priceRange: "$$$$",
-      legality: "Medical use only",
+      category: "G Med",
+      description:
+        "Focuses on medical-grade compounds with clinical applications.",
+      products: ["HGH", "Insulin", "Medical Steroids"],
+      established: "2006",
+      country: "Europe",
+      rating: 4.7,
     },
     {
       id: 6,
       name: "LA Anabolics",
-      category: "Bodybuilding",
-      benefits: [
-        "Bodybuilding-specific formulations",
-        "Muscle growth optimization",
-        "Strength enhancement",
-        "Competition-grade products",
-      ],
-      usage: "Bodybuilding and physique sports",
-      rating: 4.4,
-      reviews: 203,
-      color: "bg-gradient-to-br from-amber-50 to-amber-100",
-      borderColor: "border-amber-200",
-      textColor: "text-amber-800",
-      icon: <FaChartLine className="text-amber-600" />,
+      category: "LA Anabolics",
+      description:
+        "A leading name in anabolic compounds and bodybuilding supplements.",
+      products: ["Anabolics", "Prohormones", "Stacks"],
       established: "2008",
-      popularity: 92,
-      sideEffects: "Moderate",
-      priceRange: "$$",
-      legality: "Varies by region",
+      country: "USA",
+      rating: 4.4,
     },
     {
       id: 7,
       name: "Thaiger",
-      category: "Asian Pharma",
-      benefits: [
-        "Traditional Asian formulations",
-        "Cost-effective alternatives",
-        "Widely accessible",
-        "Growing market presence",
-      ],
-      usage: "General performance enhancement",
-      rating: 4.2,
-      reviews: 98,
-      color: "bg-gradient-to-br from-orange-50 to-orange-100",
-      borderColor: "border-orange-200",
-      textColor: "text-orange-800",
-      icon: <FaShieldAlt className="text-orange-600" />,
-      established: "2015",
-      popularity: 70,
-      sideEffects: "Moderate",
-      priceRange: "$",
-      legality: "OTC in some regions",
+      category: "Thaiger",
+      description:
+        "Specializes in pharmaceutical products with traditional and modern formulations.",
+      products: ["Traditional Remedies", "Modern Steroids", "Herbal Blends"],
+      established: "2001",
+      country: "Thailand",
+      rating: 4.3,
     },
     {
       id: 8,
       name: "Denik",
-      category: "Specialized",
-      benefits: [
-        "Specialized compound blends",
-        "Custom formulations",
-        "Targeted results",
-        "Niche market focus",
-      ],
-      usage: "Specialized applications",
-      rating: 4.1,
-      reviews: 45,
-      color: "bg-gradient-to-br from-indigo-50 to-indigo-100",
-      borderColor: "border-indigo-200",
-      textColor: "text-indigo-800",
-      icon: <FaFlask className="text-indigo-600" />,
-      established: "2012",
-      popularity: 65,
-      sideEffects: "Varies",
-      priceRange: "$$$",
-      legality: "Prescription required",
+      category: "Denik",
+      description:
+        "Manufactures a wide range of performance and therapeutic pharmaceuticals.",
+      products: ["Steroids", "Peptides", "Recovery Agents"],
+      established: "2015",
+      country: "Eastern Europe",
+      rating: 4.2,
     },
     {
       id: 9,
       name: "Superior Peptides",
-      category: "Peptide Research",
-      benefits: [
-        "Advanced peptide formulations",
-        "Research-focused products",
-        "Cutting-edge technology",
-        "Future-oriented compounds",
-      ],
-      usage: "Research and experimental applications",
-      rating: 4.7,
-      reviews: 78,
-      color: "bg-gradient-to-br from-cyan-50 to-cyan-100",
-      borderColor: "border-cyan-200",
-      textColor: "text-cyan-800",
-      icon: <FaFlask className="text-cyan-600" />,
-      established: "2018",
-      popularity: 82,
-      sideEffects: "Low",
-      priceRange: "$$$$",
-      legality: "Research use only",
+      category: "Superior Peptides",
+      description:
+        "Expert in peptide synthesis and research compounds for various applications.",
+      products: ["Peptides", "Research Chemicals", "Bio-Identical Hormones"],
+      established: "2013",
+      country: "International",
+      rating: 4.8,
     },
   ];
 
-  const toggleFavorite = (id) => {
-    if (favorites.includes(id)) {
-      setFavorites(favorites.filter((favId) => favId !== id));
-    } else {
-      setFavorites([...favorites, id]);
-    }
-  };
+  const categories = [
+    "All",
+    "Alpha Pharma",
+    "Infinity Pharma",
+    "German Remedies",
+    "3rd Degree",
+    "G Med",
+    "LA Anabolics",
+    "Thaiger",
+    "Denik",
+    "Superior Peptides",
+  ];
 
-  const copyToClipboard = async (text, id) => {
-    await navigator.clipboard.writeText(text);
-    setCopiedId(id);
-    setTimeout(() => setCopiedId(null), 2000);
-  };
-
-  const filteredSteroids = useMemo(() => {
-    return steroidData.filter(
-      (steroid) =>
-        steroid.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        steroid.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        steroid.benefits.some((benefit) =>
-          benefit.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-    );
-  }, [searchTerm, steroidData]);
-
-  const sortedSteroids = useMemo(() => {
-    return [...filteredSteroids].sort((a, b) => {
-      let comparison = 0;
-      if (sortBy === "rating") comparison = a.rating - b.rating;
-      if (sortBy === "popularity") comparison = a.popularity - b.popularity;
-      if (sortBy === "established")
-        comparison = parseInt(a.established) - parseInt(b.established);
-      if (sortBy === "reviews") comparison = a.reviews - b.reviews;
-
-      return sortOrder === "desc" ? -comparison : comparison;
-    });
-  }, [filteredSteroids, sortBy, sortOrder]);
-
-  const categories = [...new Set(steroidData.map((item) => item.category))];
-
-  const shareBrand = (brand) => {
-    const text = `Check out ${brand.name} - ${brand.category} steroids. Rating: ${brand.rating}/5`;
-    if (navigator.share) {
-      navigator.share({
-        title: brand.name,
-        text: text,
-        url: window.location.href,
-      });
-    } else {
-      copyToClipboard(text, `share-${brand.id}`);
-    }
-  };
-
-  const stats = {
-    totalBrands: steroidData.length,
-    totalCategories: categories.length,
-    averageRating: (
-      steroidData.reduce((acc, brand) => acc + brand.rating, 0) /
-      steroidData.length
-    ).toFixed(1),
-    totalReviews: steroidData.reduce((acc, brand) => acc + brand.reviews, 0),
-    averagePopularity: (
-      steroidData.reduce((acc, brand) => acc + brand.popularity, 0) /
-      steroidData.length
-    ).toFixed(0),
-  };
+  const filteredManufacturers =
+    selectedCategory === "All"
+      ? manufacturers
+      : manufacturers.filter((m) => m.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 p-4 md:p-8">
-      <div className="max-w-8xl mx-auto">
-        {/* Header */}
-        <motion.header
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-10"
-        >
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 flex items-center gap-3">
-                <FaCapsules className="text-blue-600 text-3xl" />
-                Steroid Categories & Brands
-                <span className="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
-                  Professional Database
-                </span>
-              </h1>
-              <p className="text-gray-600 mt-3 max-w-3xl">
-                Comprehensive overview of pharmaceutical steroid categories,
-                benefits, applications, and safety information for medical
-                professionals and researchers.
-              </p>
-            </div>
-
-            <div className="mt-6 md:mt-0 flex flex-col md:flex-row items-start md:items-center gap-4">
-              <div className="relative">
-                <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search brands, categories, benefits..."
-                  className="pl-12 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none w-full md:w-80 transition-all duration-300"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
-              </div>
-
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setViewMode("grid")}
-                  className={`p-3 rounded-lg ${
-                    viewMode === "grid"
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-gray-600 hover:bg-gray-100"
-                  }`}
-                >
-                  Grid
-                </button>
-                <button
-                  onClick={() => setViewMode("list")}
-                  className={`p-3 rounded-lg ${
-                    viewMode === "list"
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-gray-600 hover:bg-gray-100"
-                  }`}
-                >
-                  List
-                </button>
-              </div>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4 md:p-8">
+      {/* Header */}
+      <header className="max-w-6xl mx-auto mb-12">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
+              Steroid <span className="text-blue-600">Pharmaceuticals</span>
+            </h1>
+            <p className="text-gray-600 text-lg">
+              Comprehensive Guide to Pharmaceutical Manufacturers
+            </p>
           </div>
-
-          {/* Category Filter */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                selectedCategory === null
-                  ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg"
-                  : "bg-white text-gray-700 hover:bg-gray-50 shadow-sm"
-              }`}
-              onClick={() => setSelectedCategory(null)}
-            >
-              All Categories
-            </motion.button>
-            {categories.map((category, index) => (
-              <motion.button
-                key={category}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                  selectedCategory === category
-                    ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg"
-                    : "bg-white text-gray-700 hover:bg-gray-50 shadow-sm"
-                }`}
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category}
-              </motion.button>
-            ))}
-          </div>
-
-          {/* Sort Controls */}
-          <div className="flex flex-wrap items-center gap-4 mb-6 p-4 bg-white rounded-xl shadow-sm">
-            <div className="flex items-center gap-2">
-              <FaFilter className="text-gray-400" />
-              <span className="text-gray-600 font-medium">Sort by:</span>
-            </div>
-            <select
-              className="px-4 py-2 rounded-lg border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <option value="rating">Rating</option>
-              <option value="popularity">Popularity</option>
-              <option value="established">Established</option>
-              <option value="reviews">Reviews</option>
-            </select>
-            <button
-              className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors"
-              onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-            >
-              {sortOrder === "asc" ? (
-                <FaSortAmountUp className="text-gray-600" />
-              ) : (
-                <FaSortAmountDown className="text-gray-600" />
-              )}
+          <div className="mt-4 md:mt-0">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300">
+              Subscribe for Updates
             </button>
           </div>
-        </motion.header>
+        </div>
 
-        {/* Stats Dashboard */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-10"
-        >
-          {[
-            {
-              label: "Total Brands",
-              value: stats.totalBrands,
-              icon: FaBuilding,
-              color: "blue",
-              trend: "+2 this year",
-            },
-            {
-              label: "Categories",
-              value: stats.totalCategories,
-              icon: FaFlask,
-              color: "green",
-              trend: "Diverse",
-            },
-            {
-              label: "Avg Rating",
-              value: stats.averageRating,
-              icon: FaStar,
-              color: "amber",
-              trend: "Excellent",
-            },
-            {
-              label: "Total Reviews",
-              value: stats.totalReviews,
-              icon: FaUserMd,
-              color: "purple",
-              trend: `${Math.round(
-                stats.totalReviews / steroidData.length
-              )} avg`,
-            },
-            {
-              label: "Avg Popularity",
-              value: `${stats.averagePopularity}%`,
-              icon: FaChartLine,
-              color: "red",
-              trend: "High demand",
-            },
-          ].map((stat, index) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.05 }}
-              className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-gray-500 text-sm font-medium">
-                    {stat.label}
-                  </p>
-                  <p className="text-3xl font-bold text-gray-900 mt-2">
-                    {stat.value}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-1">{stat.trend}</p>
-                </div>
-                <div className={`p-3 rounded-full bg-${stat.color}-100`}>
-                  <stat.icon className={`text-${stat.color}-600 text-xl`} />
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+        {/* Introduction */}
+        <div className="bg-white rounded-2xl shadow-xl p-6 mb-8">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            Understanding Steroid Pharmaceuticals
+          </h2>
+          <p className="text-gray-700 mb-4">
+            Steroids are a class of organic compounds with a specific molecular
+            structure. In the pharmaceutical industry, they are used for various
+            medical purposes including anti-inflammatory treatments, hormone
+            replacement therapy, and performance enhancement. The manufacturers
+            listed below are key players in the production of these compounds,
+            each with their own specialties and quality standards.
+          </p>
+          <div className="flex items-center text-sm text-gray-500">
+            <span className="bg-blue-100 text-blue-800 py-1 px-3 rounded-full mr-3">
+              Medical Use
+            </span>
+            <span className="bg-green-100 text-green-800 py-1 px-3 rounded-full mr-3">
+              Research
+            </span>
+            <span className="bg-purple-100 text-purple-800 py-1 px-3 rounded-full">
+              Quality Standards
+            </span>
+          </div>
+        </div>
+      </header>
 
-        {/* Disclaimer */}
-        <AnimatePresence>
-          {showDisclaimer && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mb-8 bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-2xl p-6"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex items-start gap-4">
-                  <FaExclamationTriangle className="text-red-500 text-2xl mt-1" />
-                  <div>
-                    <h4 className="font-bold text-gray-900 mb-2">
-                      Important Disclaimer
-                    </h4>
-                    <p className="text-gray-700">
-                      This information is for educational purposes only. Steroid
-                      use without medical supervision can be dangerous. Always
-                      consult with healthcare professionals.
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setShowDisclaimer(false)}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  ×
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Main Content */}
-        <main>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Brand Cards */}
-            <div
-              className={`${
-                viewMode === "grid" ? "lg:col-span-2" : "lg:col-span-3"
-              }`}
-            >
-              <div
-                className={`${
-                  viewMode === "grid"
-                    ? "grid grid-cols-1 md:grid-cols-2 gap-6"
-                    : "space-y-6"
+      <main className="max-w-6xl mx-auto">
+        {/* Category Filter */}
+        <div className="mb-10">
+          <h3 className="text-xl font-semibold text-gray-800 mb-4">
+            Filter by Manufacturer
+          </h3>
+          <div className="flex flex-wrap gap-2 mb-8">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-full transition duration-300 ${
+                  selectedCategory === category
+                    ? "bg-blue-600 text-white shadow-md"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
               >
-                <AnimatePresence>
-                  {sortedSteroids
-                    .filter(
-                      (steroid) =>
-                        selectedCategory === null ||
-                        steroid.category === selectedCategory
-                    )
-                    .map((steroid, index) => (
-                      <motion.div
-                        key={steroid.id}
-                        layout
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        transition={{ delay: index * 0.05 }}
-                        whileHover={{ y: -5 }}
-                        className={`${steroid.color} border-2 ${
-                          steroid.borderColor
-                        } rounded-3xl shadow-xl overflow-hidden transition-all duration-500 ${
-                          viewMode === "list" ? "flex" : ""
-                        }`}
+                {category}
+              </button>
+            ))}
+          </div>
+          <div className="bg-blue-50 p-4 rounded-lg">
+            <p className="text-blue-800">
+              Showing{" "}
+              <span className="font-bold">{filteredManufacturers.length}</span>{" "}
+              manufacturer{filteredManufacturers.length !== 1 ? "s" : ""}
+              {selectedCategory !== "All" && ` in ${selectedCategory}`}
+            </p>
+          </div>
+        </div>
+
+        {/* Manufacturers Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {filteredManufacturers.map((manufacturer) => (
+            <div
+              key={manufacturer.id}
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <h3 className="text-xl font-bold text-gray-900">
+                    {manufacturer.name}
+                  </h3>
+                  <div className="flex items-center bg-gray-100 rounded-full px-3 py-1">
+                    <svg
+                      className="w-5 h-5 text-yellow-500 mr-1"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                    <span className="font-semibold">{manufacturer.rating}</span>
+                  </div>
+                </div>
+
+                <p className="text-gray-600 mb-5">{manufacturer.description}</p>
+
+                <div className="mb-5">
+                  <h4 className="font-semibold text-gray-800 mb-2">
+                    Key Products:
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {manufacturer.products.map((product, index) => (
+                      <span
+                        key={index}
+                        className="bg-blue-100 text-blue-800 text-sm py-1 px-3 rounded-full"
                       >
-                        <div
-                          className={`${
-                            viewMode === "list" ? "flex-1 p-8" : "p-6"
-                          }`}
-                        >
-                          <div
-                            className={`flex ${
-                              viewMode === "list"
-                                ? "items-start gap-6"
-                                : "flex-col"
-                            }`}
-                          >
-                            {/* Brand Header */}
-                            <div
-                              className={`flex ${
-                                viewMode === "list"
-                                  ? "items-start gap-6"
-                                  : "justify-between items-start mb-6"
-                              }`}
-                            >
-                              <div
-                                className={`flex ${
-                                  viewMode === "list"
-                                    ? "items-start gap-6"
-                                    : "items-center gap-4"
-                                }`}
-                              >
-                                <div
-                                  className={`bg-white p-4 rounded-2xl shadow-lg ${
-                                    viewMode === "list" ? "flex-shrink-0" : ""
-                                  }`}
-                                >
-                                  {steroid.icon}
-                                </div>
-                                <div>
-                                  <div className="flex items-center gap-3 mb-2">
-                                    <h3
-                                      className={`font-bold ${
-                                        viewMode === "list"
-                                          ? "text-2xl"
-                                          : "text-xl"
-                                      } ${steroid.textColor}`}
-                                    >
-                                      {steroid.name}
-                                    </h3>
-                                    <span className="bg-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">
-                                      {steroid.category}
-                                    </span>
-                                  </div>
-                                  <div className="flex flex-wrap items-center gap-4 mt-3">
-                                    <div className="flex items-center">
-                                      <div className="flex">
-                                        {[...Array(5)].map((_, i) => (
-                                          <FaStar
-                                            key={i}
-                                            className={
-                                              i < Math.floor(steroid.rating)
-                                                ? "text-amber-500"
-                                                : "text-gray-300"
-                                            }
-                                          />
-                                        ))}
-                                      </div>
-                                      <span className="ml-2 font-medium">
-                                        {steroid.rating}
-                                      </span>
-                                      <span className="text-gray-500 text-sm ml-2">
-                                        ({steroid.reviews} reviews)
-                                      </span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                      <div className="w-32 bg-gray-200 rounded-full h-2">
-                                        <div
-                                          className="bg-green-500 h-2 rounded-full"
-                                          style={{
-                                            width: `${steroid.popularity}%`,
-                                          }}
-                                        />
-                                      </div>
-                                      <span className="text-sm text-gray-600">
-                                        {steroid.popularity}% popularity
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="flex items-center gap-3">
-                                <button
-                                  onClick={() => toggleFavorite(steroid.id)}
-                                  className="text-2xl hover:scale-110 transition-transform"
-                                >
-                                  {favorites.includes(steroid.id) ? (
-                                    <FaHeart className="text-red-500" />
-                                  ) : (
-                                    <FaRegHeart className="text-gray-400 hover:text-red-500" />
-                                  )}
-                                </button>
-                                <button
-                                  onClick={() => shareBrand(steroid)}
-                                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                                >
-                                  <FaShareAlt className="text-gray-600" />
-                                </button>
-                              </div>
-                            </div>
-
-                            {/* Brand Details */}
-                            <div
-                              className={`mt-6 ${
-                                viewMode === "list"
-                                  ? "grid grid-cols-3 gap-8"
-                                  : ""
-                              }`}
-                            >
-                              <div
-                                className={
-                                  viewMode === "list" ? "col-span-2" : ""
-                                }
-                              >
-                                <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                                  <FaCheckCircle className="text-green-500" />
-                                  Key Benefits:
-                                </h4>
-                                <ul className="space-y-3">
-                                  {steroid.benefits.map((benefit, index) => (
-                                    <motion.li
-                                      key={index}
-                                      initial={{ opacity: 0, x: -20 }}
-                                      animate={{ opacity: 1, x: 0 }}
-                                      transition={{ delay: index * 0.1 }}
-                                      className="flex items-start"
-                                    >
-                                      <div className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0" />
-                                      <span className="text-gray-800">
-                                        {benefit}
-                                      </span>
-                                    </motion.li>
-                                  ))}
-                                </ul>
-                              </div>
-
-                              <div className="mt-6 pt-6 border-t border-gray-200">
-                                <div className="grid grid-cols-2 gap-4">
-                                  <div>
-                                    <h4 className="font-semibold text-gray-900 mb-2">
-                                      <FaCalendarAlt className="inline mr-2 text-gray-400" />
-                                      Established
-                                    </h4>
-                                    <p className="text-gray-700">
-                                      {steroid.established}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <h4 className="font-semibold text-gray-900 mb-2">
-                                      <FaInfoCircle className="inline mr-2 text-gray-400" />
-                                      Usage
-                                    </h4>
-                                    <p className="text-gray-700">
-                                      {steroid.usage}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <h4 className="font-semibold text-gray-900 mb-2">
-                                      ⚠️ Side Effects
-                                    </h4>
-                                    <p className="text-gray-700">
-                                      {steroid.sideEffects}
-                                    </p>
-                                  </div>
-                                  <div>
-                                    <h4 className="font-semibold text-gray-900 mb-2">
-                                      💰 Price Range
-                                    </h4>
-                                    <p className="text-gray-700">
-                                      {steroid.priceRange}
-                                    </p>
-                                  </div>
-                                </div>
-
-                                <div className="mt-4 flex items-center justify-between">
-                                  <span
-                                    className={`px-3 py-1 rounded-full text-sm font-medium ${
-                                      steroid.legality.includes("Prescription")
-                                        ? "bg-blue-100 text-blue-800"
-                                        : steroid.legality.includes("Medical")
-                                        ? "bg-green-100 text-green-800"
-                                        : "bg-gray-100 text-gray-800"
-                                    }`}
-                                  >
-                                    {steroid.legality}
-                                  </span>
-                                  <button
-                                    onClick={() =>
-                                      copyToClipboard(
-                                        `${steroid.name} - ${steroid.category}\nRating: ${steroid.rating}\nUsage: ${steroid.usage}\nEstablished: ${steroid.established}`,
-                                        steroid.id
-                                      )
-                                    }
-                                    className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-                                  >
-                                    {copiedId === steroid.id ? (
-                                      <>
-                                        <FaClipboardCheck className="text-green-500" />
-                                        <span className="text-sm">Copied!</span>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <FaRegCopy />
-                                        <span className="text-sm">
-                                          Copy Info
-                                        </span>
-                                      </>
-                                    )}
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                </AnimatePresence>
-              </div>
-            </div>
-
-            {/* Sidebar */}
-            {viewMode === "grid" && (
-              <div className="lg:col-span-1">
-                <div className="sticky top-8 space-y-6">
-                  {/* Favorites Section */}
-                  <div className="bg-white rounded-3xl shadow-xl p-6 border border-gray-100">
-                    <h3 className="font-bold text-xl text-gray-900 mb-4 flex items-center gap-3">
-                      <FaHeart className="text-red-500" />
-                      Favorite Brands
-                      <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">
-                        {favorites.length}
+                        {product}
                       </span>
-                    </h3>
-                    <div className="space-y-4">
-                      {favorites.length > 0 ? (
-                        favorites.map((favId) => {
-                          const favBrand = steroidData.find(
-                            (brand) => brand.id === favId
-                          );
-                          return (
-                            <motion.div
-                              key={favId}
-                              initial={{ opacity: 0, x: -20 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              whileHover={{ scale: 1.02 }}
-                              className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-200"
-                            >
-                              <div className="flex items-center gap-4">
-                                <div
-                                  className={`p-3 rounded-lg ${favBrand.color}`}
-                                >
-                                  {favBrand.icon}
-                                </div>
-                                <div>
-                                  <h4 className="font-semibold text-gray-900">
-                                    {favBrand.name}
-                                  </h4>
-                                  <div className="flex items-center gap-2 mt-1">
-                                    <div className="flex">
-                                      <FaStar className="text-amber-500 text-sm" />
-                                      <span className="text-sm font-medium ml-1">
-                                        {favBrand.rating}
-                                      </span>
-                                    </div>
-                                    <span className="text-xs text-gray-500">
-                                      {favBrand.category}
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <button
-                                  onClick={() => toggleFavorite(favId)}
-                                  className="p-2 hover:bg-red-50 rounded-lg transition-colors"
-                                >
-                                  <FaHeart className="text-red-500" />
-                                </button>
-                                <button
-                                  onClick={() => setSelectedBrand(favBrand)}
-                                  className="px-3 py-1 bg-blue-100 text-blue-700 hover:bg-blue-200 rounded-lg text-sm transition-colors"
-                                >
-                                  View
-                                </button>
-                              </div>
-                            </motion.div>
-                          );
-                        })
-                      ) : (
-                        <div className="text-center py-8">
-                          <FaHeart className="text-gray-300 text-4xl mx-auto mb-4" />
-                          <p className="text-gray-500">
-                            No favorites selected yet
-                          </p>
-                          <p className="text-sm text-gray-400 mt-2">
-                            Click the heart icon to add favorites
-                          </p>
-                        </div>
-                      )}
-                    </div>
+                    ))}
                   </div>
+                </div>
 
-                  {/* Category Summary */}
-                  <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl shadow-xl p-6 border border-blue-100">
-                    <h3 className="font-bold text-xl text-gray-900 mb-6 flex items-center gap-3">
-                      <FaFilter className="text-blue-600" />
-                      Categories Overview
-                    </h3>
-                    <div className="space-y-4">
-                      {categories.map((category) => {
-                        const categoryBrands = steroidData.filter(
-                          (brand) => brand.category === category
-                        );
-                        const avgRating = (
-                          categoryBrands.reduce(
-                            (acc, brand) => acc + brand.rating,
-                            0
-                          ) / categoryBrands.length
-                        ).toFixed(1);
-                        const totalReviews = categoryBrands.reduce(
-                          (acc, brand) => acc + brand.reviews,
-                          0
-                        );
-
-                        return (
-                          <motion.div
-                            key={category}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            className="flex items-center justify-between p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 cursor-pointer hover:bg-white transition-all duration-300"
-                            onClick={() => setSelectedCategory(category)}
-                          >
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-gray-900 mb-1">
-                                {category}
-                              </h4>
-                              <div className="flex items-center gap-4 text-sm text-gray-600">
-                                <span>
-                                  {categoryBrands.length}{" "}
-                                  {categoryBrands.length === 1
-                                    ? "brand"
-                                    : "brands"}
-                                </span>
-                                <span>•</span>
-                                <span>{totalReviews} reviews</span>
-                              </div>
-                            </div>
-                            <div className="text-right">
-                              <div className="flex items-center justify-end gap-2">
-                                <FaStar className="text-amber-500" />
-                                <span className="font-bold text-gray-900">
-                                  {avgRating}
-                                </span>
-                              </div>
-                              <span className="text-xs text-gray-500">
-                                avg rating
-                              </span>
-                            </div>
-                          </motion.div>
-                        );
-                      })}
-                    </div>
-
-                    {/* Safety Guidelines */}
-                    <div className="mt-8 pt-6 border-t border-gray-300/50">
-                      <h4 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <FaUserMd className="text-blue-600" />
-                        Safety Guidelines
-                      </h4>
-                      <ul className="space-y-3">
-                        {[
-                          "Always consult with licensed healthcare professionals",
-                          "Never exceed recommended dosages",
-                          "Regular blood work and health monitoring required",
-                          "Be aware of legal status in your region",
-                          "Report any adverse effects immediately",
-                          "Consider long-term health implications",
-                        ].map((guideline, index) => (
-                          <motion.li
-                            key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="flex items-start text-sm text-gray-700"
-                          >
-                            <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 mr-3 flex-shrink-0" />
-                            <span>{guideline}</span>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </div>
+                <div className="flex justify-between text-sm text-gray-500 pt-4 border-t border-gray-200">
+                  <div className="flex items-center">
+                    <svg
+                      className="w-5 h-5 mr-1 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                    <span>Est. {manufacturer.established}</span>
                   </div>
-
-                  {/* Export Data */}
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-3xl shadow-xl p-6 border border-green-100">
-                    <h4 className="font-bold text-lg text-gray-900 mb-4 flex items-center gap-3">
-                      <FaDownload className="text-green-600" />
-                      Export Data
-                    </h4>
-                    <p className="text-gray-700 mb-4 text-sm">
-                      Download comprehensive information about all steroid
-                      brands for research or documentation purposes.
-                    </p>
-                    <div className="grid grid-cols-2 gap-3">
-                      <button className="px-4 py-3 bg-white hover:bg-gray-50 text-gray-800 rounded-xl border border-gray-200 transition-all duration-300 hover:shadow-md flex flex-col items-center justify-center">
-                        <span className="font-medium">CSV</span>
-                        <span className="text-xs text-gray-500">
-                          Spreadsheet
-                        </span>
-                      </button>
-                      <button className="px-4 py-3 bg-white hover:bg-gray-50 text-gray-800 rounded-xl border border-gray-200 transition-all duration-300 hover:shadow-md flex flex-col items-center justify-center">
-                        <span className="font-medium">PDF</span>
-                        <span className="text-xs text-gray-500">Report</span>
-                      </button>
-                    </div>
+                  <div className="flex items-center">
+                    <svg
+                      className="w-5 h-5 mr-1 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span>{manufacturer.country}</span>
                   </div>
                 </div>
               </div>
-            )}
-          </div>
-        </main>
+              <div className="bg-gray-50 px-6 py-3">
+                <button className="text-blue-600 font-medium hover:text-blue-800 transition duration-300">
+                  View Details & Products →
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
 
-        {/* Footer */}
-        <footer className="mt-16 pt-8 border-t border-gray-200">
-          <div className="text-center text-gray-600">
-            <p className="mb-4">
-              This database is updated regularly. Last updated:{" "}
-              {new Date().toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
-            <p className="text-sm text-gray-500">
-              For educational purposes only. Always follow local laws and
-              regulations.
+        {/* Safety Information Section */}
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 mb-12 shadow-lg">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Important Safety Information
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-2">
+                Medical Supervision
+              </h3>
+              <p className="text-gray-700 mb-4">
+                All steroid use should be conducted under strict medical
+                supervision. Self-administration without proper knowledge and
+                monitoring can lead to serious health complications.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-2">
+                Legal Considerations
+              </h3>
+              <p className="text-gray-700 mb-4">
+                The legality of steroid products varies by country and
+                jurisdiction. Always ensure compliance with local regulations
+                before purchasing or using any pharmaceutical products.
+              </p>
+            </div>
+          </div>
+          <div className="mt-6 p-4 bg-white rounded-lg border-l-4 border-blue-500">
+            <p className="text-gray-800">
+              <span className="font-bold">Disclaimer:</span> This information is
+              for educational purposes only. Always consult with a healthcare
+              professional before starting any pharmaceutical regimen.
             </p>
           </div>
-        </footer>
-      </div>
+        </div>
+
+        {/* Statistics Section */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            Industry Overview
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-white p-6 rounded-xl shadow text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">9</div>
+              <div className="text-gray-700">Major Manufacturers</div>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">25+</div>
+              <div className="text-gray-700">Years Combined Experience</div>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">50+</div>
+              <div className="text-gray-700">Countries Served</div>
+            </div>
+            <div className="bg-white p-6 rounded-xl shadow text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">4.6</div>
+              <div className="text-gray-700">Average Quality Rating</div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="max-w-6xl mx-auto pt-8 mt-12 border-t border-gray-300">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="mb-4 md:mb-0">
+            <h3 className="text-xl font-bold text-gray-900">
+              Steroid Pharmaceuticals Blog
+            </h3>
+            <p className="text-gray-600">
+              Educational Resource on Pharmaceutical Manufacturers
+            </p>
+          </div>
+          <div className="text-sm text-gray-500">
+            <p>
+              © {new Date().getFullYear()} All Rights Reserved. For educational
+              purposes only.
+            </p>
+          </div>
+        </div>
+        <div className="mt-6 text-center text-gray-500 text-sm">
+          <p>
+            This page provides information about pharmaceutical manufacturers.
+            Always consult medical professionals for health-related decisions.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 };
