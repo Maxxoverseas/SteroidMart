@@ -528,7 +528,7 @@ export const products = [
     price: "$40.50",
     category: "ORALS",
     image:
-      "https://musclesfrenzy.com/wp-content/uploads/2023/08/infinity-pharma-anavar-scaled.jpg",
+      "https://5.imimg.com/data5/SELLER/Default/2023/2/BR/YA/CF/154900792/infinity-pharma-oxandrolone-10mg.jpeg",
   },
   {
     id: 67,
@@ -592,7 +592,8 @@ export const products = [
     potency: "50MG",
     price: "$27.00",
     category: "ORALS",
-    image: "https://cpimg.tistatic.com/5988704/b/4/anadrol-50-tablet.jpg",
+    image:
+      "https://5.imimg.com/data5/ANDROID/Default/2024/10/457970039/GX/HB/MW/67832869/product-jpeg.jpg",
   },
   {
     id: 72,
@@ -722,7 +723,7 @@ export const products = [
     price: "$28.71",
     category: "Injectables",
     image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrJy7UOMa6pU8a5Z68Q2uVXxlCHcD4wuNKpg&s",
+      "https://5.imimg.com/data5/SELLER/PDFImage/2025/7/523997592/MT/SM/TT/236621512/german-remedies-boldebal-400-boldenone-undecylenate.png",
   },
   {
     id: 82,
@@ -813,7 +814,7 @@ export const products = [
     price: "$36.63",
     category: "Injectables",
     image:
-      "https://www.montagelabs.com/product-images/Trenbolone-Hexahydrobenzyl-Car-1719397009.jpg",
+      "https://5.imimg.com/data5/SELLER/Default/2024/10/457828330/IK/UK/TM/2928319/whatsapp-image-2024-10-11-at-4-03-03-pm-500x500.jpeg",
   },
   {
     id: 89,
@@ -917,8 +918,9 @@ export const products = [
     price: "$31.50",
     category: "Injectables",
     image:
-      "https://img500.exportersindia.com/product_images/bc-500/2024/2/13046205/masteron-injection-1708167220-7298194.jpeg",
+      "https://5.imimg.com/data5/SELLER/Default/2024/10/455532133/ET/XR/LL/2928319/whatsapp-image-2024-10-02-at-7-27-12-pm-1.jpeg",
   },
+
   {
     id: 97,
     brand: "German Remedies",
@@ -1098,7 +1100,7 @@ export const products = [
     price: "$26.73",
     category: "Tablets",
     image:
-      "https://5.imimg.com/data5/SELLER/PDFImage/2025/11/556870638/LS/ZJ/JD/79479582/german-remedies-gr-m-drol30-250x250.png",
+      "https://5.imimg.com/data5/SELLER/Default/2024/3/397916542/EK/CF/HO/15574956/6-1-1536x1202.png",
   },
   {
     id: 111,
@@ -1604,7 +1606,7 @@ export const products = [
     price: "$21.60",
     category: "Injectables",
     image:
-      "https://www.pharmacyplanet.com/media/catalog/product/cache/8a6c3b4711c45a412e5f2ab9a843d0ed/s/u/sustanon_250_mg.jpg",
+      "https://5.imimg.com/data5/SELLER/Default/2024/10/455848153/ZA/MQ/PP/2928319/whatsapp-image-2024-10-03-at-9-33-49-pm-500x500.jpeg",
   },
   {
     id: 150,
